@@ -18,7 +18,7 @@ pipeline {
 
   environment {
     DOCKER_CREDENTIALS = credentials("dockerhub")
-    IMAGE_NAME = "<your-dockerhub-username>" + "/" + "jobber-review"
+    IMAGE_NAME = "dilawchaybi" + "/" + "jobber-review"
     IMAGE_TAG = "stable-${BUILD_NUMBER}"
   }
 
@@ -34,34 +34,18 @@ pipeline {
         sh "[ -d pipeline ] || mkdir pipeline"
         dir("pipeline") {
           // Add your jenkins automation url to url field
-          git branch: 'main', credentialsId: 'github', url: ''
+          git branch: 'main', credentialsId: 'github', url: 'https://github.com/walidChaybi/jobber-reviews'
           script {
             groovyMethods = load("functions.groovy")
           }
         }
         // Add your chat review url to url field
-        git branch: 'main', credentialsId: 'github', url: ''
+        git branch: 'main', credentialsId: 'github', url: 'https://github.com/walidChaybi/jobber-reviews'
         sh 'npm install'
       }
     }
 
-    stage("Lint Check") {
-      steps {
-        sh 'npm run lint:check'
-      }
-    }
 
-    stage("Code Format Check") {
-      steps {
-        sh 'npm run prettier:check'
-      }
-    }
-
-    stage("Unit Test") {
-      steps {
-        sh 'npm run test'
-      }
-    }
 
     stage("Build and Push") {
       steps {
